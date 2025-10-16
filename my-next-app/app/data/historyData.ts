@@ -18,10 +18,10 @@ export interface HistoryQuestion {
     },
     {
       id: 2,
-      title: "Source: The Bayeux Tapestry",
-      imageUrl: "https://i.imgur.com/bayeux-tapestry-example.jpg", // REPLACE with a real URL
+      title: "Source: sdadas",
+      imageUrl: "/images/sources/americanspeech.jpeg",
       questionText: "What key event does this section of the Bayeux Tapestry depict, and what does it suggest about military tactics of the time?",
-      fullAnswerText: "This section depicts the Battle of Hastings in 1066. It shows the Norman cavalry charging the English shield wall. The scene suggests that both sides employed specific, well-known military formations and tactics, with the Norman feigned retreat being a key element.",
+      fullAnswerText: "Analysis of an unknown historical source revealing a literate, formerly enslaved speaker addressing a July 4th public celebration to expose the fundamental contradiction between America's founding ideals of freedom and the reality of millions enslaved, arguing that slavery corrupts the nation's republicanism, moral authority, and unity while reclaiming the Constitution as a freedom document against pro-slavery defenders, reflecting a period of active public debate when this urgent, divisive issue remained unresolved.",
     },
     // Add more questions here
   ];
