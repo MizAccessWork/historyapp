@@ -12,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarHeader,
   SidebarInset,
+  SidebarTrigger,  // Add this import
 } from "@/components/ui/sidebar"
 import { Home, BookOpen, GraduationCap } from "lucide-react"
 
@@ -67,7 +68,12 @@ export default function RootLayout({
             </SidebarContent>
           </Sidebar>
           <SidebarInset>
-            {children}
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+              <SidebarTrigger />
+            </header>
+            <div className="flex flex-1 flex-col gap-4 p-4">
+              {children}
+            </div>
           </SidebarInset>
         </SidebarProvider>
       </body>
