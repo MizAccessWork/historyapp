@@ -12,7 +12,7 @@ export interface HistoryQuestion {
     {
       id: 1,
       title: "Source: George Washington's Portrait",
-      imageUrl: "https://i.imgur.com/example-of-your-image.jpg",
+      imageUrl: "/images/sources/carpet.webp",
       questionText: "What is the historical significance of the carpet featured in the background of George Washington's portrait?",
       fullAnswerText: "This 18th-century Persian carpet, likely a Kerman or Isfahan, is featured prominently in the background of Gilbert Stuart's famous 'Landsdowne' portrait of George Washington, signifying wealth and global trade and reflecting the complex global commerce of the era. Its inclusion was a deliberate choice to elevate Washington's status.",
     },
