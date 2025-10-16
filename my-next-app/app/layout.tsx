@@ -1,11 +1,23 @@
 // app/layout.tsx
-import "@/globals.css"
 import type { Metadata } from "next"
-import { Sidebar } from "@/components/ui/sidebar" // adjust path as needed
+import "@/globals.css"
+import { 
+  SidebarProvider, 
+  Sidebar, 
+  SidebarContent, 
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarHeader,
+  SidebarInset,
+} from "@/components/ui/sidebar"
+import { Home, BookOpen, GraduationCap } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "My App",
-  description: "A Next.js app with shadcn sidebar",
+  title: "History Interview App",
+  description: "Practice your history interview questions",
 }
 
 export default function RootLayout({
@@ -15,14 +27,49 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen bg-background text-foreground">
-        {/* Sidebar stays fixed on the left */}
-        <Sidebar />
-
-        {/* Main content area */}
-        <main className="flex-1 overflow-y-auto p-6">
-          {children}
-        </main>
+      <body>
+        <SidebarProvider>
+          <Sidebar>
+            <SidebarHeader>
+              <h2 className="px-2 text-lg font-semibold">History Interview</h2>
+            </SidebarHeader>
+            <SidebarContent>
+              <SidebarGroup>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton asChild>
+                        <a href="/">
+                          <Home />
+                          <span>Home</span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton asChild>
+                        <a href="/questions">
+                          <BookOpen />
+                          <span>Questions</span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton asChild>
+                        <a href="/practice">
+                          <GraduationCap />
+                          <span>Practice</span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            </SidebarContent>
+          </Sidebar>
+          <SidebarInset>
+            {children}
+          </SidebarInset>
+        </SidebarProvider>
       </body>
     </html>
   )
