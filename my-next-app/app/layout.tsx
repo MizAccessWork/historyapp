@@ -14,7 +14,7 @@ import {
   SidebarInset,
   SidebarTrigger,  // Add this import
 } from "@/components/ui/sidebar"
-import { Home, BookOpen, GraduationCap } from "lucide-react"
+import { Home, BookOpen, GraduationCap, Scroll } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "History Interview App",
@@ -48,9 +48,9 @@ export default function RootLayout({
                     </SidebarMenuItem>
                     <SidebarMenuItem>
                       <SidebarMenuButton asChild>
-                        <a href="/questions">
-                          <BookOpen />
-                          <span>Questions</span>
+                        <a href="/sources">
+                          <Scroll />
+                          <span>Sources</span>
                         </a>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
