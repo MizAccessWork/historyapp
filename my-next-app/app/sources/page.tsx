@@ -2,12 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 
-// Define the content constants outside the component to avoid re-creation on every render
-const SOURCE_TITLE = "Source: George Washington's Portrait"; 
+// --- CONFIGURATION CONSTANTS ---
+const SOURCE_TITLE = "History Interview Simulator"; 
 const IMAGE_URL = "https://i.imgur.com/example-of-your-image.jpg"; // Replace with your actual image URL
-const FULL_ANSWER_TEXT = "This 18th-century Persian carpet, likely a Kerman or Isfahan, is featured prominently in the background of Gilbert Stuart's famous 'Landsdowne' portrait of George Washington, signifying wealth and global trade.";
+// The full text to be revealed word by word
+const FULL_ANSWER_TEXT = "This 18th-century Persian carpet, likely a Kerman or Isfahan, is featured prominently in the background of Gilbert Stuart's famous 'Landsdowne' portrait of George Washington, signifying wealth and global trade and reflecting the complex global commerce of the era.";
 const ANSWER_WORDS = FULL_ANSWER_TEXT.split(' '); // Split the answer into an array of words
-const TYPING_SPEED_MS = 60; // Adjust this value to control the speed of the animation
+const TYPING_SPEED_MS = 50; // Adjust this value (lower = faster)
+// --- END CONFIGURATION ---
 
 type HistorySimulatorProps = {};
 
@@ -15,43 +17,35 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
   const [wordCount, setWordCount] = useState(0);
 
-  // Combine the displayed words back into a single string
-  const displayedAnswer = ANSWER_WORDS.slice(0, wordCount).join(' ') + 
-    (wordCount < ANSWER_WORDS.length ? (wordCount > 0 ? '...' : '') : '');
+  // Dynamically build the answer string based on the current wordCount
+  const displayedAnswer = ANSWER_WORDS.slice(0, wordCount).join(' ');
+
+  // Determine if the full answer has been displayed
+  const isAnimationComplete = wordCount >= ANSWER_WORDS.length;
 
   // useEffect hook to handle the word-by-word animation
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
 
-    if (isAnswerRevealed && wordCount < ANSWER_WORDS.length) {
+    if (isAnswerRevealed && !isAnimationComplete) {
       // Start the interval timer
       intervalId = setInterval(() => {
-        setWordCount(prevCount => {
-          // If we reach the end of the text, clear the interval
-          if (prevCount >= ANSWER_WORDS.length) {
-            if (intervalId) clearInterval(intervalId);
-            return prevCount;
-          }
-          // Otherwise, increment the count
-          return prevCount + 1;
-        });
+        setWordCount(prevCount => prevCount + 1);
       }, TYPING_SPEED_MS);
     } else if (!isAnswerRevealed) {
         // If the answer is hidden, reset the word count
         setWordCount(0);
     }
 
-    // Cleanup function to clear the interval when the component unmounts 
-    // or when dependencies change (i.e., when animation finishes)
+    // Cleanup function to clear the interval
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [isAnswerRevealed, wordCount]); // Depend on isAnswerRevealed and wordCount
+  }, [isAnswerRevealed, isAnimationComplete]); 
 
   const handleRevealAnswer = () => {
     if (!isAnswerRevealed) {
       setIsAnswerRevealed(true);
-      // setWordCount(1); // Start with the first word
     }
   };
 
@@ -62,55 +56,88 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
     // Add logic here to load the next question/image
   };
 
-  // Determine if the full answer has been displayed
-  const isAnimationComplete = wordCount >= ANSWER_WORDS.length;
 
   return (
-    // Main container. Assumes it takes up the full width/height of the content area next to the sidebar.
+    // Main container (fills the available content space)
     <div className="flex flex-col p-4 md:p-8 min-h-screen bg-gray-50">
       
-      {/* Source Title / Context */}
       <h1 className="text-2xl font-bold mb-6 text-gray-800">{SOURCE_TITLE}</h1>
 
-      {/* Two-Column Split: Answer (Left) and Source (Right) */}
-      {/* md:grid-cols-2 ensures the split view on desktop */}
+      {/* Two-Column Split: Image (Left) and Answer/Interaction (Right) */}
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8">
         
-        {/* === LEFT COLUMN: Answer, Buttons, and Interaction Area (Order-first on mobile) === */}
-        <div className="flex flex-col space-y-6 md:order-first order-first">
-          <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Your Analysis / Question</h2>
-
-          {/* Area for User's Input / Current Question (Placeholder) */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex-1 min-h-[150px]">
-            <p className="text-gray-500 italic">
-              *Space for the interview question or where the user will provide their answer.*
-            </p>
+        {/* === LEFT COLUMN: Image Source Area (Image always on the left for desktop, first on mobile) === */}
+        <div className="flex flex-col space-y-4 md:order-first order-first">
+          <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Visual Source Image</h2>
+          
+          {/* Image Container with specific fitting rules - Fills its half of the screen */}
+          <div className="flex-1 flex justify-center items-center bg-white p-4 rounded-lg shadow-inner border border-gray-200 min-h-[300px]">
+            <img 
+              src={IMAGE_URL} 
+              alt="Historical Source Image"
+              // Image fitting: max-w-full and max-h-full to ensure it uses the full height of the container
+              // object-contain scales the image proportionally to fit without cropping.
+              className="max-w-full max-h-full object-contain rounded-md shadow-lg"
+            />
           </div>
+        </div>
 
-          {/* Answer Reveal Area */}
-          <div 
-            // Only show the answer area once the button is clicked
-            className={`transition-all duration-500 ease-in-out ${isAnswerRevealed ? 'opacity-100 max-h-screen p-6 border-green-200' : 'opacity-0 max-h-0 overflow-hidden p-0 border-transparent'} bg-green-50 rounded-lg border`}
-          >
-            <h3 className="text-lg font-bold text-green-800 mb-2">Correct Answer & Analysis:</h3>
-            <p className="text-gray-700 whitespace-pre-wrap">
-              {displayedAnswer}
-            </p>
+
+        {/* === RIGHT COLUMN: Answer, Buttons, and Interaction Area (Answer always on the right for desktop, second on mobile) === */}
+        <div className="flex flex-col space-y-6 md:order-last order-last">
+          <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Your Analysis & Answer</h2>
+
+          {/* Main Content Box - Fills the majority of the half-page */}
+          <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+            
+            {/* Conditional Content: Show Question/Placeholder OR The Answer */}
+
+            {/* Question/Placeholder Area (Visible until button is clicked) */}
+            {!isAnswerRevealed && (
+              <div className="h-full">
+                <h3 className="text-lg font-bold text-gray-800 mb-4">Question:</h3>
+                <p className="text-gray-600 italic">
+                  What is the significance of the carpet in the 'Landsdowne' portrait of George Washington? 
+                  Use evidence from the source to support your answer.
+                </p>
+                {/* Additional space for a text input area if needed */}
+                <textarea 
+                    className="w-full mt-4 p-3 border border-gray-300 rounded-md resize-none" 
+                    rows={8} 
+                    placeholder="Type your analysis here..."
+                    disabled
+                ></textarea>
+              </div>
+            )}
+
+            {/* Answer Reveal Area (Animates after button click) */}
+            {isAnswerRevealed && (
+              <div className="h-full bg-green-50 p-4 -m-4 rounded-lg border border-green-200 transition duration-300">
+                <h3 className="text-lg font-bold text-green-800 mb-3">Correct Answer & Analysis:</h3>
+                <p className="text-gray-700 whitespace-pre-wrap">
+                  {displayedAnswer}
+                  {/* Subtle cursor blink animation while typing */}
+                  {!isAnimationComplete && (
+                      <span className="animate-pulse inline-block w-1.5 h-4 bg-gray-700 ml-1"></span>
+                  )}
+                </p>
+              </div>
+            )}
           </div>
           
           {/* Action Buttons */}
           <div className="flex justify-between pt-4">
             <button
               onClick={handleRevealAnswer}
-              // Disable button only when animation is running or complete
+              // Button is disabled when the answer is revealed AND the animation is complete
               disabled={isAnswerRevealed && isAnimationComplete}
               className={`px-6 py-3 font-semibold rounded-lg shadow-md transition duration-150 
                 ${isAnswerRevealed && isAnimationComplete
-                  ? 'bg-green-600 text-white cursor-not-allowed' // Change color when revealed
-                  : (isAnswerRevealed ? 'bg-gray-400 text-gray-600 cursor-wait' : 'bg-blue-600 text-white hover:bg-blue-700') // Show 'wait' cursor during typing
+                  ? 'bg-green-600 text-white cursor-not-allowed' // Final state
+                  : (isAnswerRevealed ? 'bg-gray-400 text-gray-600 cursor-wait' : 'bg-blue-600 text-white hover:bg-blue-700') // Typing state or initial state
                 }`}
             >
-              {isAnswerRevealed && isAnimationComplete ? 'Answer Revealed' : 'Reveal Answer'}
+              {isAnswerRevealed && isAnimationComplete ? 'Analysis Complete' : 'Reveal Answer'}
             </button>
             <button
               onClick={handleSkipQuestion}
@@ -118,21 +145,6 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
             >
               Skip Question
             </button>
-          </div>
-        </div>
-
-        {/* === RIGHT COLUMN: Image Source Area (Order-last on mobile) === */}
-        <div className="flex flex-col space-y-4 md:order-last order-first">
-          <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Visual Source Image</h2>
-          
-          {/* Image Container with specific fitting rules */}
-          <div className="flex-1 flex justify-center items-center bg-white p-4 rounded-lg shadow-inner border border-gray-200 min-h-[300px]">
-            <img 
-              src={IMAGE_URL} 
-              alt="Historical Source Image"
-              // Image fitting: max-w-full and max-h-[85vh] (to ensure it doesn't dominate)
-              className="max-w-full max-h-[85vh] object-contain rounded-md shadow-lg"
-            />
           </div>
         </div>
         
