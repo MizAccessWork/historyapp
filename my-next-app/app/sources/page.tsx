@@ -108,7 +108,7 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
             {/* Answer Reveal Area */}
             {isAnswerRevealed && (
               <div className="h-full w-full text-left">
-                <h3 className="text-xl font-bold text-green-700 mb-3">Correct Analysis:</h3>
+                <h3 className="text-xl font-bold text-green-700 mb-3">Suitable Analysis:</h3>
                 <p className="text-lg text-gray-800 whitespace-pre-wrap leading-relaxed">
                   {displayedAnswer}
                   {!isAnimationComplete && (
