@@ -1,4 +1,4 @@
 export default function Home(){
 
-  return <p>dasadasdsd</p>
+  return <p>Home page for the history interview app, add stuff here later</p>
 };
