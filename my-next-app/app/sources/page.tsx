@@ -1,3 +1,5 @@
+'use client'; 
+
 import React, { useState } from 'react';
 
 // Define a type for the component props if needed, but for a structural component, it's often empty
