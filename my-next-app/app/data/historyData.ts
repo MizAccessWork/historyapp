@@ -11,16 +11,16 @@ export interface HistoryQuestion {
   export const allHistoryQuestions: HistoryQuestion[] = [
     {
       id: 1,
-      title: "Source: George Washington's Portrait",
+      title: "Source: Carpet",
       imageUrl: "/images/sources/carpet.webp",
-      questionText: "What is the historical significance of the carpet featured in the background of George Washington's portrait?",
-      fullAnswerText: "This 18th-century Persian carpet, likely a Kerman or Isfahan, is featured prominently in the background of Gilbert Stuart's famous 'Landsdowne' portrait of George Washington, signifying wealth and global trade and reflecting the complex global commerce of the era. Its inclusion was a deliberate choice to elevate Washington's status.",
+      questionText: "What can you infer about a historical period using this source",
+      fullAnswerText: "The carpet's complexity and uniformity show it was made by",
     },
     {
       id: 2,
-      title: "Source: sdadas",
+      title: "Source: Douglas Speech",
       imageUrl: "/images/sources/americanspeech.jpeg",
-      questionText: "What key event does this section of the Bayeux Tapestry depict, and what does it suggest about military tactics of the time?",
+      questionText: "What does this speech tell us about the historical period?",
       fullAnswerText: "Analysis of an unknown historical source revealing a literate, formerly enslaved speaker addressing a July 4th public celebration to expose the fundamental contradiction between America's founding ideals of freedom and the reality of millions enslaved, arguing that slavery corrupts the nation's republicanism, moral authority, and unity while reclaiming the Constitution as a freedom document against pro-slavery defenders, reflecting a period of active public debate when this urgent, divisive issue remained unresolved.",
     },
     // Add more questions here
