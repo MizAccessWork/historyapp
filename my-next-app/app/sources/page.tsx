@@ -6,9 +6,10 @@ import React, { useState, useEffect } from 'react';
 const SOURCE_TITLE = "History Interview Simulator"; 
 const IMAGE_URL = "https://i.imgur.com/example-of-your-image.jpg"; // Replace with your actual image URL
 // The full text to be revealed word by word
-const FULL_ANSWER_TEXT = "This 18th-century Persian carpet, likely a Kerman or Isfahan, is featured prominently in the background of Gilbert Stuart's famous 'Landsdowne' portrait of George Washington, signifying wealth and global trade and reflecting the complex global commerce of the era.";
+const QUESTION_TEXT = "What is the historical significance of the carpet featured in the background of George Washington's portrait?";
+const FULL_ANSWER_TEXT = "This 18th-century Persian carpet, likely a Kerman or Isfahan, is featured prominently in the background of Gilbert Stuart's famous 'Landsdowne' portrait of George Washington, signifying wealth and global trade and reflecting the complex global commerce of the era. Its inclusion was a deliberate choice to elevate Washington's status.";
 const ANSWER_WORDS = FULL_ANSWER_TEXT.split(' '); 
-const TYPING_SPEED_MS = 50; 
+const TYPING_SPEED_MS = 45; // Slightly faster typing speed
 // --- END CONFIGURATION ---
 
 type HistorySimulatorProps = {};
@@ -61,7 +62,7 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
     // Main container (fills the available content space)
     <div className="flex flex-col p-4 md:p-8 min-h-screen bg-gray-50">
       
-      {/* Main Title is kept here */}
+      {/* Main Title */}
       <h1 className="text-2xl font-bold mb-6 text-gray-800">{SOURCE_TITLE}</h1>
 
       {/* Two-Column Split: Image (Left) and Answer/Interaction (Right) */}
@@ -69,10 +70,10 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
         
         {/* === LEFT COLUMN: Image Source Area === */}
         <div className="flex flex-col space-y-4 md:order-first order-first">
-          {/* Simplified Heading: Just "Source:" */}
+          {/* Heading: "Source:" */}
           <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Source:</h2>
           
-          {/* Image Container with specific fitting rules - Fills its half of the screen */}
+          {/* Image Container */}
           <div className="flex-1 flex justify-center items-center bg-white p-4 rounded-lg shadow-inner border border-gray-200 min-h-[300px]">
             <img 
               src={IMAGE_URL} 
@@ -83,38 +84,32 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
         </div>
 
 
-        {/* === RIGHT COLUMN: Answer, Buttons, and Interaction Area === */}
+        {/* === RIGHT COLUMN: Answer/Interaction Area === */}
         <div className="flex flex-col space-y-6 md:order-last order-last">
-          {/* Simplified Heading: Just "Answer:" */}
+          {/* Heading: "Answer:" */}
           <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Answer:</h2>
 
           {/* Main Content Box - The area that will display the question OR the animated answer */}
-          <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+          <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col justify-center items-center text-center">
             
-            {/* Question/Placeholder Area (Visible until button is clicked) */}
+            {/* Question Area (Prominent, Centered, Hidden on Reveal) */}
             {!isAnswerRevealed && (
-              <div className="h-full">
-                <h3 className="text-lg font-bold text-gray-800 mb-4">Question Prompt:</h3>
-                <p className="text-gray-600 italic">
-                  What is the significance of the carpet in the 'Landsdowne' portrait of George Washington? 
-                  Use evidence from the source to support your analysis.
+              <div className="h-full flex flex-col justify-center items-center p-4">
+                <h3 className="text-3xl font-extrabold text-gray-900 mb-4 tracking-tight">
+                  Question:
+                </h3>
+                <p className="text-2xl text-gray-700 font-medium italic max-w-lg">
+                  {QUESTION_TEXT}
                 </p>
-                {/* Text input area (placeholder) */}
-                <textarea 
-                    className="w-full mt-4 p-3 border border-gray-300 rounded-md resize-none" 
-                    rows={8} 
-                    placeholder="Type your analysis here..."
-                    disabled
-                ></textarea>
               </div>
             )}
 
-            {/* Answer Reveal Area (Animates after button click) */}
-            {/* **CRITICAL CHANGE**: The green background and extra padding are removed. */}
+            {/* Answer Reveal Area (Takes up the whole box on Reveal) */}
             {isAnswerRevealed && (
-              <div className="h-full">
-                <h3 className="text-lg font-bold text-green-700 mb-3">Correct Analysis:</h3>
-                <p className="text-gray-700 whitespace-pre-wrap">
+              // Reset alignment for the answer text
+              <div className="h-full w-full text-left">
+                <h3 className="text-xl font-bold text-green-700 mb-3">Correct Analysis:</h3>
+                <p className="text-lg text-gray-800 whitespace-pre-wrap leading-relaxed">
                   {displayedAnswer}
                   {/* Subtle cursor blink animation while typing */}
                   {!isAnimationComplete && (
