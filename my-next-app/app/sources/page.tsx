@@ -1,60 +1,97 @@
-// pages/app/sources/page.tsx (or similar)
+import React, { useState } from 'react';
 
-import Image from 'next/image';
-import allSources from '@/app/data/sources.json'; 
+// Define a type for the component props if needed, but for a structural component, it's often empty
+type HistorySimulatorProps = {};
 
-// Define the interface for the full data structure
-interface ModelAnswer {
-  // Define the structure of your answer here later (e.g., key_points: string[])
-  [key: string]: any; // Use a more permissive type for now
-}
-
-interface Source {
-  id: number;
-  source_title: string;
-  source_type: 'Image' | 'Text'; 
-  source_file?: string; 
-  source_content?: string; 
-  question: string;
-  model_answer: ModelAnswer; // MUST BE PRESENT IN THE JSON
-}
-
-// Tell TypeScript that the imported JSON array conforms to the Source interface
-const sourcesData: Source[] = allSources as Source[];
-
-
-export default function FirstSourceDisplay() {
-  // Use the correctly typed array for finding the source
-  const firstSource = sourcesData.find(source => source.id === 1);
-
-  // The rest of your display logic is correct:
-  if (!firstSource) {
-    return <div>Source not found.</div>;
-  }
+/**
+ * A Next.js/React component for the History Interview Simulator.
+ * It provides a two-column layout for the question/answer and the source image.
+ */
+const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
+  // Placeholder state for demonstration
+  const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
   
-  const isImageSource = firstSource.source_type === 'Image';
+  // --- PLACEHOLDER DATA: REPLACE WITH REAL DATA/PROPS LATER ---
+  const sourceTitle = "Source: George Washington's Portrait"; 
+  // NOTE: Replace this with the actual URL or local path to your image
+  const imageUrl = "https://i.imgur.com/example-of-your-image.jpg"; 
+  const answerText = "This 18th-century Persian carpet, likely a Kerman or Isfahan, is featured prominently in the background of Gilbert Stuart's famous 'Landsdowne' portrait of George Washington, signifying wealth and global trade.";
+  // -----------------------------------------------------------
 
   return (
-    <div className="source-interview-area">
-      <h1>Source: {firstSource.source_title}</h1>
+    // Main container. Assumes it takes up the full width/height of the content area next to the sidebar.
+    <div className="flex flex-col p-4 md:p-8 min-h-screen bg-gray-50">
       
-      {isImageSource && firstSource.source_file && (
-        <div className="source-image-wrapper">
-          <Image
-            src={firstSource.source_file}
-            alt={`Historical Source: ${firstSource.source_title}`}
-            width={600} 
-            height={400}
-            style={{ objectFit: 'contain' }}
-          />
-        </div>
-      )}
+      {/* Source Title / Context */}
+      <h1 className="text-2xl font-bold mb-6 text-gray-800">{sourceTitle}</h1>
 
-      {!isImageSource && <p>This source is a Text document.</p>}
-      
-      <h2>Question:</h2>
-      <p>{firstSource.question}</p>
-      
+      {/* Two-Column Split: Answer (Left) and Source (Right) */}
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        {/* === LEFT COLUMN: Answer, Buttons, and Interaction Area === */}
+        <div className="flex flex-col space-y-6">
+          <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Your Analysis / Question</h2>
+
+          {/* Area for User's Input / Current Question (Placeholder) */}
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex-1 min-h-[150px]">
+            <p className="text-gray-500 italic">
+              *Space for the interview question or where the user will provide their answer.*
+            </p>
+          </div>
+
+          {/* Answer Reveal Area (Conditional Display) */}
+          <div 
+            className={`transition-all duration-500 ease-in-out ${isAnswerRevealed ? 'opacity-100 max-h-screen p-6 border-green-200' : 'opacity-0 max-h-0 overflow-hidden p-0 border-transparent'} bg-green-50 rounded-lg border`}
+          >
+            <h3 className="text-lg font-bold text-green-800 mb-2">Correct Answer & Analysis:</h3>
+            <p className="text-gray-700">{answerText}</p>
+          </div>
+          
+          {/* Action Buttons */}
+          <div className="flex justify-between pt-4">
+            <button
+              onClick={() => setIsAnswerRevealed(true)} 
+              disabled={isAnswerRevealed}
+              className={`px-6 py-3 font-semibold rounded-lg shadow-md transition duration-150 
+                ${isAnswerRevealed 
+                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed' 
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
+            >
+              {isAnswerRevealed ? 'Answer Revealed' : 'Reveal Answer'}
+            </button>
+            <button
+              onClick={() => {
+                console.log('Skipping question and resetting...');
+                setIsAnswerRevealed(false);
+                // Add logic here to load the next question/image
+              }}
+              className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-150"
+            >
+              Skip Question
+            </button>
+          </div>
+        </div>
+
+        {/* === RIGHT COLUMN: Image Source Area === */}
+        <div className="flex flex-col space-y-4 md:order-last order-first">
+          <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Visual Source Image</h2>
+          
+          {/* Image Container with specific fitting rules */}
+          <div className="flex-1 flex justify-center items-center bg-white p-4 rounded-lg shadow-inner border border-gray-200 min-h-[300px]">
+            <img 
+              src={imageUrl} 
+              alt="Historical Source Image"
+              // The key to fitting: max-w-full and max-h-[85vh] (to ensure it doesn't take the full screen height)
+              // object-contain scales the image to fit fully within the container without cropping.
+              className="max-w-full max-h-[85vh] object-contain rounded-md shadow-lg"
+            />
+          </div>
+        </div>
+        
+      </div>
     </div>
   );
-}
+};
+
+export default HistorySimulator;
