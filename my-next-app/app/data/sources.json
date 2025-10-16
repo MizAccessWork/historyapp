@@ -1,0 +1,18 @@
+[
+    {
+      "id": 1,
+      "source_title": "George Washington's Portrait",
+      "source_type": "Image", 
+      "source_file": "/images/sources/carpet.webp",
+      "question": "What does the pose and clothing suggest about Washington's desired public image?",
+      "model_answer": {} 
+    },
+    {
+      "id": 2,
+      "source_title": "Text Source Title...",
+      "source_type": "Text",
+      "source_content": "These are the times...",
+      "question": "What is the context...",
+      "model_answer": {} 
+    }
+  ]
