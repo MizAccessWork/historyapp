@@ -18,24 +18,24 @@ export interface HistoryQuestion {
       // --- Answer 1: FULLY FORMATTED WITH BACKTICKS (Template Literal) ---
       fullAnswerText: `We can make inferences of a historical period using this carpet by identifying certain visible features to base inferences on as well as identifying what inferences could be made if more information was identified.
 
-      1. The design of the carpet 
+      The design of the carpet 
       Carpet’s intricate, non-repeating design suggests it was not produced by a single artisan. Likely required a combination of designers, dyers and weavers which suggest a structured economy with high levels of specialisation. 
       
-      1.*Materials of the carpet
+      Materials of the carpet
       This a non-essential luxury good produced with significant amount of labor and materials which suggest that the society had enough wealth to support the creation of goods beyond subsistence production. 
       
       Obtaining the materials to produce this carpet could imply access to long-distance trade networks to obtain valuable raw materials.
       
-      1.	Purchasers of the carpet
+      Purchasers of the carpet
       Costly, labor-intensive good identifies an elite consumer class (royalty, aristocracy, wealthy merchants) who commissioned and appreciated the item which suggest social stratification in the period.
       
-      1. Geographic provenance
+      Geographic provenance
       Inference could be made about the location, such as the city serving as a artistic, commercial and cultural centre, or if it came from a peripheral area it could imply the export of technology / skills.
       
-      1. Symbolic meanings
+      Symbolic meanings
       A historian could explore whether the design of the carpet are symbolic for certain cultural or religious worldviews. 
       
-      1. Specific techniques and materials
+      Specific techniques and materials
       If more detail was identified about specific knotting techniques and materials, they could allow a historian to pinpoint the date and origin to a specific workshop or a regional style, allowing for a precise correlation with known historical periods of craft production.`,
     },
     {
