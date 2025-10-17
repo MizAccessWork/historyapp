@@ -5,7 +5,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { allHistoryQuestions, HistoryQuestion } from '@/app/data/historyData'; 
 
 // --- CONFIGURATION CONSTANTS ---
-const TYPING_SPEED_MS = 45; 
+// Renamed for clarity: this is now the delay between section/paragraph reveals
+const SECTION_REVEAL_DELAY_MS = 300; 
 // --- END CONFIGURATION ---
 
 type HistorySimulatorProps = {};
@@ -13,36 +14,52 @@ type HistorySimulatorProps = {};
 const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
-  const [wordCount, setWordCount] = useState(0);
+  
+  // CHANGED: Tracks the number of sections revealed, not words
+  const [sectionIndex, setSectionIndex] = useState(0); 
 
   // --- DERIVED STATE / MEMOIZED VALUES ---
   const currentQuestion: HistoryQuestion = allHistoryQuestions[currentQuestionIndex];
-  const ANSWER_WORDS = useMemo(() => currentQuestion.fullAnswerText.split(' '), [currentQuestion.fullAnswerText]);
-  const displayedAnswer = ANSWER_WORDS.slice(0, wordCount).join(' ');
-  const isAnimationComplete = wordCount >= ANSWER_WORDS.length;
+  
+  // CHANGED: Split the answer by double newlines to define sections/paragraphs
+  const ANSWER_SECTIONS = useMemo(() => currentQuestion.fullAnswerText.split('\n\n'), [currentQuestion.fullAnswerText]);
+  
+  // CHANGED: Displayed answer is now the join of the revealed sections
+  const displayedAnswer = ANSWER_SECTIONS.slice(0, sectionIndex).join('\n\n');
+  
+  // CHANGED: Animation complete when all sections are revealed
+  const isAnimationComplete = sectionIndex >= ANSWER_SECTIONS.length;
   // ----------------------------------------
 
-  // useEffect hook for typing animation... (omitted for brevity, no change needed)
+  // useEffect hook for section-by-section animation
   useEffect(() => {
-    let intervalId: NodeJS.Timeout | null = null;
+    let timeoutId: NodeJS.Timeout | null = null;
+    
+    // Check if revealed and not complete
     if (isAnswerRevealed && !isAnimationComplete) {
-      intervalId = setInterval(() => {
-        setWordCount(prevCount => prevCount + 1);
-      }, TYPING_SPEED_MS);
-    } else if (!isAnswerRevealed) {
-        setWordCount(0);
+      // Use setTimeout for a delay between sections
+      timeoutId = setTimeout(() => {
+        setSectionIndex(prevIndex => prevIndex + 1);
+      }, SECTION_REVEAL_DELAY_MS);
+    } 
+    // Reset section index when answer is hidden
+    else if (!isAnswerRevealed) {
+        setSectionIndex(0);
     }
+    
+    // Cleanup function
     return () => {
-      if (intervalId) clearInterval(intervalId);
+      if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [isAnswerRevealed, isAnimationComplete, currentQuestion.id]); 
+  // Dependencies include sectionIndex to trigger the next reveal after a delay
+  }, [isAnswerRevealed, isAnimationComplete, currentQuestion.id, sectionIndex]); 
 
-  // Navigation handlers... (omitted for brevity, no change needed)
+  // Navigation handlers
   const goToNextQuestion = () => {
     const nextIndex = (currentQuestionIndex + 1) % allHistoryQuestions.length;
     setCurrentQuestionIndex(nextIndex);
     setIsAnswerRevealed(false); 
-    setWordCount(0); 
+    setSectionIndex(0); // Reset section index
   }
 
   const handleRevealAnswer = () => {
@@ -57,32 +74,22 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
 
 
   return (
-    // Main container. Use 'overflow-hidden' to ensure the page itself does not scroll 
-    // from internal content that tries to break out, although min-h-screen should prevent this.
     <div className="flex flex-col p-4 md:p-8 min-h-screen bg-gray-50">
       
       {/* Main Title */}
       <h1 className="text-2xl font-bold mb-6 text-gray-800">{currentQuestion.title}</h1>
 
       {/* Two-Column Split: Image (Left) and Answer/Interaction (Right) */}
-      {/* flex-1 ensures this grid takes up the rest of the vertical space */}
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8">
         
-        {/* === LEFT COLUMN: Image Source Area === */}
+        {/* === LEFT COLUMN: Image Source Area (No changes needed here for the request) === */}
         <div className="flex flex-col space-y-4 md:order-first order-first">
           <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Source:</h2>
           
-          {/* 
-            CRITICAL FIX: 
-            1. Use 'flex-1' to make it grow to fill the available space.
-            2. Use a specific maximum height (e.g., max-h-[75vh]) to ensure 
-               it can't push the viewport, leaving space for the header/footer/padding.
-          */}
           <div className="flex-1 flex justify-center items-center bg-white p-4 rounded-lg shadow-inner border border-gray-200 min-h-[300px] max-h-[75vh]">
             <img 
               src={currentQuestion.imageUrl}
               alt={currentQuestion.title}
-              // max-h-full now strictly refers to the parent's max-h-[75vh] limit
               className="max-w-full max-h-full object-contain rounded-md shadow-lg"
             />
           </div>
@@ -93,10 +100,17 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
         <div className="flex flex-col space-y-6 md:order-last order-last">
           <h2 className="text-xl font-semibold text-gray-700 border-b pb-2">Answer:</h2>
 
-          {/* Answer Box: Also needs to take vertical space using flex-1 */}
-          <div className="flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col justify-center items-center text-center">
+          {/* 
+            Answer Box: 
+            - Use flex-1 to fill vertical space.
+            - When answer is revealed, content should align to the start (no justify-center/items-center).
+          */}
+          <div 
+            className={`flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col 
+              ${!isAnswerRevealed ? 'justify-center items-center text-center' : ''}`}
+          >
             
-            {/* Question Area */}
+            {/* Question Area (Centering is fine here) */}
             {!isAnswerRevealed && (
               <div className="h-full flex flex-col justify-center items-center p-4">
                 <h3 className="text-3xl font-extrabold text-gray-900 mb-4 tracking-tight">
@@ -110,10 +124,22 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
 
             {/* Answer Reveal Area */}
             {isAnswerRevealed && (
-              <div className="h-full w-full text-left">
-                <h3 className="text-xl font-bold text-green-700 mb-3">Correct Analysis:</h3>
-                <p className="text-lg text-gray-800 whitespace-pre-wrap leading-relaxed">
-                  {displayedAnswer}
+              // CRITICAL: h-full makes it take up the available space from the flex-1 parent.
+              // overflow-y-auto adds the scroll bar when content exceeds height.
+              <div className="h-full w-full text-left overflow-y-auto"> 
+                {/* 
+                  Sticky header for the "Correct Analysis" title 
+                  (z-10, top-0, bg-white for background)
+                */}
+                <h3 className="text-xl font-bold text-green-700 mb-3 sticky top-0 bg-white z-10 pb-2 border-b">
+                  Correct Analysis:
+                </h3>
+                
+                <p className="text-lg text-gray-800 whitespace-pre-wrap leading-relaxed pt-2">
+                  {/* Text appears in sections separated by double newlines (\n\n) */}
+                  {displayedAnswer} 
+                  
+                  {/* Blinking cursor/indicator shows animation is ongoing */}
                   {!isAnimationComplete && (
                       <span className="animate-pulse inline-block w-1.5 h-4 bg-gray-700 ml-1"></span>
                   )}
