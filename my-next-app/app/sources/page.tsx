@@ -137,7 +137,7 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
             </button>
             <button
               onClick={handleSkipQuestion}
-              className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-150"
+              className="px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-150"
             >
               Skip Question
             </button>
