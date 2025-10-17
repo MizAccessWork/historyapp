@@ -16,36 +16,27 @@ export interface HistoryQuestion {
       questionText: "What can you infer about a historical period using this source",
       
       // --- Answer 1: FULLY FORMATTED WITH BACKTICKS (Template Literal) ---
-      fullAnswerText: `1. Economy & Labor
-  
-  The carpet’s complexity and uniformity show it was made by highly skilled, full-time artisans, not domestic weavers.
-  Indicates a structured craft economy with specialization (weavers, dyers, designers).
-  Reflects a society with economic surplus capable of producing luxury, non-essential goods.
-  
-  2. Technology & Trade
-  
-  The use of vivid natural dyes (madder, indigo, etc.) shows advanced chemical and dyeing knowledge.
-  Implies access to trade networks for acquiring expensive raw materials.
-  Suggests technological sophistication or international trade connections.
-  
-  3. Aesthetics & Culture
-  
-  The Persianate/Islamic motifs and medallion-border design reflect the elite aesthetic tastes of the period.
-  Textiles were key status symbols and architectural decorations in elite or sacred spaces.
-  Shows cultural refinement and artistic tradition associated with power and prestige.
-  
-  4. Provenance-Based Inferences
-  
-  Date of Manufacture: Determines whether it represents imperial court patronage (16th century) or commercial export production (19th century).
-  Geographic Origin: Links the carpet to specific regional political or artistic centers (e.g., Isfahan, Tabriz, Kerman).
-  Patron/Commissioner: Reveals whether it symbolized state authority, diplomacy, or private wealth.
-  Trade & Ownership History: Traces global trade routes and the spread of Oriental luxury goods.
-  
-  5. Major Historical Themes
-  
-  Social Hierarchy: Demonstrates elite patronage and wealth inequality in the society.
-  Economic Structure: Evidence of a prosperous, surplus-generating economy that supported luxury production and trade.
-  Cultural Exchange: If exported, the carpet represents cross-cultural influence and global demand for Persian artistry.`,
+      fullAnswerText: `We can make inferences of a historical period using this carpet by identifying certain visible features to base inferences on as well as identifying what inferences could be made if more information was identified.
+
+      1. The design of the carpet 
+      Carpet’s intricate, non-repeating design suggests it was not produced by a single artisan. Likely required a combination of designers, dyers and weavers which suggest a structured economy with high levels of specialisation. 
+      
+      1.*Materials of the carpet
+      This a non-essential luxury good produced with significant amount of labor and materials which suggest that the society had enough wealth to support the creation of goods beyond subsistence production. 
+      
+      Obtaining the materials to produce this carpet could imply access to long-distance trade networks to obtain valuable raw materials.
+      
+      1.	Purchasers of the carpet
+      Costly, labor-intensive good identifies an elite consumer class (royalty, aristocracy, wealthy merchants) who commissioned and appreciated the item which suggest social stratification in the period.
+      
+      1. Geographic provenance
+      Inference could be made about the location, such as the city serving as a artistic, commercial and cultural centre, or if it came from a peripheral area it could imply the export of technology / skills.
+      
+      1. Symbolic meanings
+      A historian could explore whether the design of the carpet are symbolic for certain cultural or religious worldviews. 
+      
+      1. Specific techniques and materials
+      If more detail was identified about specific knotting techniques and materials, they could allow a historian to pinpoint the date and origin to a specific workshop or a regional style, allowing for a precise correlation with known historical periods of craft production.`,
     },
     {
       id: 2,
