@@ -130,14 +130,14 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
               className={`px-6 py-3 font-semibold rounded-lg shadow-md transition duration-150 
                 ${isAnswerRevealed && isAnimationComplete
                   ? 'bg-green-600 text-white cursor-not-allowed' 
-                  : (isAnswerRevealed ? 'bg-gray-400 text-gray-600 cursor-wait' : 'bg-blue-600 text-white hover:bg-blue-700')
+                  : (isAnswerRevealed ? 'bg-gray-400 text-gray-600 cursor-wait' : 'bg-blue-600 text-white hover:bg-gray-900')
                 }`}
             >
               {isAnswerRevealed && isAnimationComplete ? 'Analysis Complete' : 'Reveal Answer'}
             </button>
             <button
               onClick={handleSkipQuestion}
-              className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-150"
+              className="px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-150"
             >
               Skip Question
             </button>
