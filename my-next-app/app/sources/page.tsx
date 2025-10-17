@@ -7,6 +7,8 @@ import { allHistoryQuestions, HistoryQuestion } from '@/app/data/historyData';
 // --- CONFIGURATION CONSTANTS ---
 // Renamed for clarity: this is now the delay between section/paragraph reveals
 const SECTION_REVEAL_DELAY_MS = 300; 
+// NEW: Constant for how many lines make up one animated section
+const LINES_PER_REVEAL_SECTION = 3; 
 // --- END CONFIGURATION ---
 
 type HistorySimulatorProps = {};
@@ -21,10 +23,26 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
   // --- DERIVED STATE / MEMOIZED VALUES ---
   const currentQuestion: HistoryQuestion = allHistoryQuestions[currentQuestionIndex];
   
-  // CHANGED: Split the answer by double newlines to define sections/paragraphs
-  const ANSWER_SECTIONS = useMemo(() => currentQuestion.fullAnswerText.split('\n\n'), [currentQuestion.fullAnswerText]);
+  // MODIFIED: Split the answer into sections of 3 lines for the animation
+  const ANSWER_SECTIONS = useMemo(() => {
+    // 1. Split the entire answer text into individual lines
+    const lines = currentQuestion.fullAnswerText.split('\n');
+    const sections: string[] = [];
+    
+    // 2. Group lines into sections of LINES_PER_REVEAL_SECTION
+    for (let i = 0; i < lines.length; i += LINES_PER_REVEAL_SECTION) {
+      // Slice the array to get the next chunk of lines
+      const sectionLines = lines.slice(i, i + LINES_PER_REVEAL_SECTION);
+      // Join the lines back with a single newline (\n) to preserve the line breaks 
+      // within the newly created section.
+      sections.push(sectionLines.join('\n')); 
+    }
+    
+    return sections;
+  }, [currentQuestion.fullAnswerText]);
   
-  // CHANGED: Displayed answer is now the join of the revealed sections
+  // CHANGED: Displayed answer is now the join of the revealed sections.
+  // We use '\n\n' to visually separate the revealed 3-line chunks like new paragraphs.
   const displayedAnswer = ANSWER_SECTIONS.slice(0, sectionIndex).join('\n\n');
   
   // CHANGED: Animation complete when all sections are revealed
@@ -125,7 +143,8 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
             {/* Answer Reveal Area */}
             {isAnswerRevealed && (
               // CRITICAL: h-full makes it take up the available space from the flex-1 parent.
-              // overflow-y-auto adds the scroll bar when content exceeds height.
+              // overflow-y-auto adds the scroll bar when content exceeds height, 
+              // fulfilling the requirement for internal scrolling.
               <div className="h-full w-full text-left overflow-y-auto"> 
                 {/* 
                   Sticky header for the "Correct Analysis" title 
@@ -136,7 +155,7 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
                 </h3>
                 
                 <p className="text-lg text-gray-800 whitespace-pre-wrap leading-relaxed pt-2">
-                  {/* Text appears in sections separated by double newlines (\n\n) */}
+                  {/* Text appears in sections grouped by 3 lines */}
                   {displayedAnswer} 
                   
                   {/* Blinking cursor/indicator shows animation is ongoing */}
@@ -174,5 +193,5 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
     </div>
   );
 };
-
+ 
 export default HistorySimulator;
