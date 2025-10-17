@@ -130,7 +130,7 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
               className={`px-6 py-3 font-semibold rounded-lg shadow-md transition duration-150 
                 ${isAnswerRevealed && isAnimationComplete
                   ? 'bg-green-600 text-white cursor-not-allowed' 
-                  : (isAnswerRevealed ? 'bg-gray-400 text-gray-600 cursor-wait' : 'bg-blue-600 text-white hover:bg-gray-900')
+                  : (isAnswerRevealed ? 'bg-gray-900 text-gray-600 cursor-wait' : 'bg-blue-600 text-white hover:bg-blue-700')
                 }`}
             >
               {isAnswerRevealed && isAnimationComplete ? 'Analysis Complete' : 'Reveal Answer'}
