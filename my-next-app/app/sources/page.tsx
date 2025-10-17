@@ -124,8 +124,9 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
             - When answer is revealed, content should align to the start (no justify-center/items-center).
           */}
           <div 
-            className={`flex-1 bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col 
+            className={`flex flex-col bg-white p-6 rounded-lg shadow-md border border-gray-200 
               ${!isAnswerRevealed ? 'justify-center items-center text-center' : ''}`}
+            style={{ height: '60vh', minHeight: '400px', overflow: 'hidden' }}  
           >
             
             {/* Question Area (Centering is fine here) */}
@@ -145,7 +146,7 @@ const HistorySimulator: React.FC<HistorySimulatorProps> = () => {
               // CRITICAL: h-full makes it take up the available space from the flex-1 parent.
               // overflow-y-auto adds the scroll bar when content exceeds height, 
               // fulfilling the requirement for internal scrolling.
-              <div className="h-full w-full text-left overflow-y-auto"> 
+              <div className="w-full text-left overflow-y-auto flex-1 pr-2"> 
                 {/* 
                   Sticky header for the "Correct Analysis" title 
                   (z-10, top-0, bg-white for background)
