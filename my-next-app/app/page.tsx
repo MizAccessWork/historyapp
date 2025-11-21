@@ -1,6 +1,6 @@
-'use server'
-
 // app/page.tsx
+// DO NOT include 'use server' here. This is a Server Component for rendering.
+
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -9,12 +9,12 @@ export default async function RootPage() {
   const cookieStore = cookies()
   
   // Try to get the authentication token
-  const authToken = (await cookieStore).get('auth_token')
+  // Removed the unnecessary await: (await cookieStore) -> cookieStore
+  const authToken = cookieStore.get('auth_token') 
 
   // Check if the auth_token cookie is present
   if (!authToken || authToken.value !== 'valid_token') {
-    // If no token or the token value doesn't match, redirect to the login page
-    // Note: In a real app, you would likely verify a JWT token here.
+    // Redirect happens on the server immediately
     redirect('/login') 
   }
 
@@ -25,7 +25,7 @@ export default async function RootPage() {
         Welcome to the Dashboard
       </h1>
       <p className="mt-4 text-lg text-green-600">
-        You are successfully logged in and vewing the protected content!
+        You are successfully logged in and viewing the protected content!
       </p>
       {/* You would typically render your main dashboard content here */}
       <p className="mt-8 text-sm text-gray-500">
