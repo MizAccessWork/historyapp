@@ -17,7 +17,7 @@ export default function LoginPage() {
 
     if (result.success) {
       // Redirect to the dashboard (or your target page)
-      router.push('/dashboard')
+      router.push('/')
     } else {
       setError(result.message || 'An error occurred')
     }
