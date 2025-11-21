@@ -17,8 +17,7 @@ export interface HistoryQuestion {
       
       // --- Answer 1: FULLY FORMATTED WITH BACKTICKS (Template Literal) ---
       fullAnswerText: `We can make inferences of a historical period using this carpet by identifying certain visible features to base inferences on as well as identifying what inferences could be made if more information was identified.
-
-      The design of the carpet 
+  The design of the carpet 
       Carpet’s intricate, non-repeating design suggests it was not produced by a single artisan. Likely required a combination of designers, dyers and weavers which suggest a structured economy with high levels of specialisation. 
       
       Materials of the carpet
