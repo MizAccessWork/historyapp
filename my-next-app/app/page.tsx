@@ -6,10 +6,8 @@ import { redirect } from 'next/navigation'
 
 export default async function RootPage() {
   // Get the cookie store from the incoming request headers
-  const cookieStore = cookies()
+  const cookieStore = await cookies() 
   
-  // Try to get the authentication token
-  // Removed the unnecessary await: (await cookieStore) -> cookieStore
   const authToken = cookieStore.get('auth_token') 
 
   // Check if the auth_token cookie is present
