@@ -1,8 +1,23 @@
-export default function Home() {
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+
+export default async function Home() {
+  // 1. Get the cookie store
+  const cookieStore = await cookies()
+  
+  // 2. Check if the login cookie exists
+  const hasCookie = cookieStore.has('auth_token')
+
+  // 3. If NOT logged in, redirect immediately
+  if (!hasCookie) {
+    redirect('/login')
+  }
+
+  // 4. If they ARE logged in, show the page content
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold">Hello World</h1>
-      <p className="mt-4 text-lg">Start building here.</p>
+    <main className="p-8">
+      <h1 className="text-2xl font-bold">Welcome to the Secret Dashboard</h1>
+      <p>You are logged in!</p>
     </main>
-  );
+  )
 }
